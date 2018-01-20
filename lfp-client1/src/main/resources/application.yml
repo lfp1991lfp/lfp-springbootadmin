@@ -1,0 +1,24 @@
+#应用名称
+spring:
+  application:
+    name: lfp-admin-client
+  boot:
+    admin:
+#    注册到应用管理列表
+      url: http://localhost:9000
+# 服务器端口
+server:
+  port: 9001
+#  调试阶段关闭安全验证
+management:
+  security:
+    enabled: false
+#    版本信息
+info:
+  app:
+#  项目名称
+    name: "@project.name@"
+    description: "@project.description@"
+    spring-boot-version: "@project.parent.version@"
+  build:
+    version: "@project.version@"
