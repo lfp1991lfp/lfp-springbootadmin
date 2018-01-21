@@ -3,3 +3,8 @@ spring:
     name: lfp-admin
 server:
   port: 9000
+#  增加登录验证的用户名和密码
+security:
+  user:
+    name: lfp
+    password: lfp123

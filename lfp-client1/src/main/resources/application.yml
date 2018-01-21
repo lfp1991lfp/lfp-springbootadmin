@@ -1,22 +1,22 @@
-#Ó¦ÓÃÃû³Æ
+#åº”ç”¨åç§°
 spring:
   application:
     name: lfp-admin-client
   boot:
     admin:
-#    ×¢²áµ½Ó¦ÓÃ¹ÜÀíÁĞ±í
+# æ³¨å…¥çš„æ¥å£ç›‘æ§
       url: http://localhost:9000
-# ·şÎñÆ÷¶Ë¿Ú
+# ç«¯å£
 server:
   port: 9001
-#  µ÷ÊÔ½×¶Î¹Ø±Õ°²È«ÑéÖ¤
+#  è°ƒè¯•é˜¶æ®µï¼Œå…³é—­å®‰å…¨éªŒè¯
 management:
   security:
     enabled: false
-#    °æ±¾ĞÅÏ¢
+#    infoä¿¡æ¯
 info:
   app:
-#  ÏîÄ¿Ãû³Æ
+#  é¡¹ç›®åç§°
     name: "@project.name@"
     description: "@project.description@"
     spring-boot-version: "@project.parent.version@"
