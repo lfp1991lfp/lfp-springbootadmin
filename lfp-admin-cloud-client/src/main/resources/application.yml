@@ -21,3 +21,6 @@ info:
     spring-boot-version: "@project.parent.version@"
   build:
     version: "@project.version@"
+hystrix:
+  metrics:
+    enabled: true

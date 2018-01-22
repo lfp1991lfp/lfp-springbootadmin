@@ -1,6 +1,14 @@
 spring:
   application:
     name: lfp-admin-cloud-server
+  boot:
+    admin:
+      routes:
+        endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
+      turbine:
+        clusters: default
+#       设置turbine端点的service-id，由于目前turbine功能已经集成到了admin-cloud-server程序中，所以这里填写的是该程序注册到注册中心的service-Id
+        location: lfp-admin-cloud-server
 server:
   port: 8001
 #  增加登录验证的用户名和密码
@@ -26,3 +34,8 @@ info:
     spring-boot-version: "@project.parent.version@"
   build:
     version: "@project.version@"
+
+turbine:
+  cluster-name-expression: new String("default")
+  #设置需要监控的serviceId
+  app-config: lfp-admin-cloud-client

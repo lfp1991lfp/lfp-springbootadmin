@@ -60,6 +60,26 @@
             <artifactId>spring-boot-admin-server-ui</artifactId>
             <version>1.5.6</version>
         </dependency>
+        <!-- 断路器扩展监控ui start -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server-ui-hystrix</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <!-- 断路器扩展监控ui end -->
+        <!-- turbine聚合UI start -->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-turbine</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server-ui-turbine</artifactId>
+            <version>1.5.6</version>
+            <!-- turbine聚合UI end -->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
