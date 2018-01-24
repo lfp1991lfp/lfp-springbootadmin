@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: lfp-ribbon
+server:
+  port: 8003
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
