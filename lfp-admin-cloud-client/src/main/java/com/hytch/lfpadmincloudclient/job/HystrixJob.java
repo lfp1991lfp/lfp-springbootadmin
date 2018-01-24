@@ -3,21 +3,23 @@ package com.hytch.lfpadmincloudclient.job;
 import com.hytch.lfpadmincloudclient.feignclient.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  * 启动一个定时器，用于定时调用客户端
  */
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 @Slf4j
 public class HystrixJob {
-
+	
+	private final UserFeignClient client;
+	
 	@Autowired
-	private UserFeignClient client;
-
+	public HystrixJob(UserFeignClient client) {
+		this.client = client;
+	}
+	
 	//corn表达式
 	@Scheduled(cron = "0/20 * * * * ?")  //每20秒执行一次
 	public void doJob() {
