@@ -1,26 +1,22 @@
-package com.hytch.lfpribbon.hello.service;
+package com.hytch.lfpfeign.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * 测试服务
- */
 @Service
-public class HelloService {
+public class StoreIntegration {
 	
 	@Autowired
 	RestTemplate restTemplate;
 	
-	//对应断路器处理，若是服务找不到，则找到对应的降级策略
-	@HystrixCommand(fallbackMethod = "error")
-	public String hiService(String name) {
+	@HystrixCommand(fallbackMethod = "defaultStores")
+	public String getStores(String name) {
 		return restTemplate.getForObject("http://lfp-admin-cloud-client/api/hi?name=" + name, String.class);
 	}
 	
-	public String error(String name) {
-		return name + "数据正在升级";
+	public String defaultStores(String name) {
+		return "服务器数据错误" + name;
 	}
 }
