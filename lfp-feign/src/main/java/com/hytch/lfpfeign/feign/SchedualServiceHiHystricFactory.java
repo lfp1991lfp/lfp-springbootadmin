@@ -1,9 +1,8 @@
 package com.hytch.lfpfeign.feign;
 
 import feign.hystrix.FallbackFactory;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class SchedualServiceHiHystricFactory implements FallbackFactory<SchedualFeignService> {
 	
 	@Override
