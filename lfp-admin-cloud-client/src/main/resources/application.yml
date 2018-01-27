@@ -24,3 +24,5 @@ info:
 hystrix:
   metrics:
     enabled: true
+feign.hystrix.enabled: true
+

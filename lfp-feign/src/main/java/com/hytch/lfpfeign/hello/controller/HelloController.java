@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/")
 public class HelloController {
 	
-	@Qualifier("schedualServiceHiHystric")
+	@Qualifier("schedualFeignService")
 	@Autowired
 	SchedualFeignService hiService;
 	
