@@ -2,6 +2,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+      prefer-ip-address: true
+      instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 server:
   port: 8006
 spring:
@@ -10,6 +13,9 @@ spring:
 hystrix:
   metrics:
     enabled: true
+management:
+  security:
+    enabled: false
 feign:
   client:
     config:
@@ -18,3 +24,13 @@ feign:
         readTimeout: 5000
         loggerLevel: basic
 feign.hystrix.enabled: true
+
+
+info:
+  app:
+#  项目名称
+    name: "@project.name@"
+    description: "@project.description@"
+    spring-boot-version: "@project.parent.version@"
+  build:
+    version: "@project.version@"

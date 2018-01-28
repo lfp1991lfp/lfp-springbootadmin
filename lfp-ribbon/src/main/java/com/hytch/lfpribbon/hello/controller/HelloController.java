@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 控制器测试
  */
 @RestController
-@RequestMapping(value = "/api/")
+@RequestMapping(value = "/order/")
 public class HelloController {
 	
 	@Autowired

@@ -39,5 +39,3 @@ turbine:
   cluster-name-expression: new String("default")
   #设置需要监控的serviceId
   app-config: lfp-admin-cloud-client
-
-feign.hystrix.enabled: true

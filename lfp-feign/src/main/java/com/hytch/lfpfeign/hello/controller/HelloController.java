@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 控制器测试
  */
 @RestController
-@RequestMapping(value = "/api/")
+@RequestMapping(value = "/user/")
 public class HelloController {
 	
 	@Qualifier("schedualFeignService")

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: lfp-zuul
+server:
+  port: 7001
+management:
+  security:
+    enabled: false
+eureka:
+  client:
+#  集群所在的客户端
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+zuul:
+  routes:
+#  用户路由网关-用户模块
+   api-user:
+#    API路径
+     path: /api/user/**
+#    访问的服务
+     serviceId: lfp-feign
+#  订单网关
+   api-order:
+     path: /api/order/**
+     serviceId: lfp-ribbon
