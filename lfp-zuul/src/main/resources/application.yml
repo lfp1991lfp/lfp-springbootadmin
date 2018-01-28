@@ -11,15 +11,24 @@ eureka:
 #  集群所在的客户端
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 zuul:
   routes:
 #  用户路由网关-用户模块
    api-user:
 #    API路径
      path: /api/user/**
-#    访问的服务
+#    访问的服务,也可以配置url,指明具体的物理地址
      serviceId: lfp-feign
 #  订单网关
    api-order:
      path: /api/order/**
      serviceId: lfp-ribbon
+# 所有的服务都被忽略，除了上述的两个路由路径(path)
+  ignored-services: '*'
+  force-original-query-string-encoding: true
+ribbon:
+  eureka:
+#   ribbon禁掉Eureka
+    enabled: false

@@ -7,8 +7,12 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.*;
+
 /**
  * 路由转发控制器，zuul控制器，进行基本的控制验证
+ * How to Write a Pre Filter
+ * http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#netflix-zuul-starter
  */
 @Slf4j
 @Component
@@ -27,37 +31,29 @@ public class TokenFilter extends ZuulFilter {
 	 */
 	@Override
 	public String filterType() {
-		return "pre";
+		return PRE_TYPE;
 	}
 
 	@Override
 	public int filterOrder() {
-		return 0;
+		return PRE_DECORATION_FILTER_ORDER - 1;
 	}
 
 	@Override
 	public boolean shouldFilter() {
-		return true;
+		RequestContext ctx = RequestContext.getCurrentContext();
+		return !ctx.containsKey(FORWARD_TO_KEY) // a filter has already forwarded
+				&& !ctx.containsKey(SERVICE_ID_KEY); // a filter has already determined serviceId;
 	}
 
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
-		log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
-		Object accessToken = request.getParameter("token");
-		if (accessToken == null) {
-			log.warn("token is empty");
-			ctx.setSendZuulResponse(false);
-			ctx.setResponseStatusCode(401);
-			try {
-				ctx.getResponse().getWriter().write("token is empty");
-			} catch (Exception e) {
-			}
-
-			return null;
+		if (request.getParameter("token") != null) {
+			// put the serviceId in `RequestContext`
+			ctx.put(SERVICE_ID_KEY, request.getParameter("foo"));
 		}
-		log.info("ok");
 		return null;
 	}
 }
