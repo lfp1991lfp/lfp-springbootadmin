@@ -6,6 +6,13 @@ spring:
     admin:
 # 注入的接口监控
       url: http://localhost:9000
+  thymeleaf:
+      cache: false
+      prefix: classpath:/templates/
+      suffix: .html
+      encoding: UTF-8
+      content-type: text/html
+      mode: HTML5
 # 端口
 server:
   port: 9001
@@ -22,3 +29,9 @@ info:
     spring-boot-version: "@project.parent.version@"
   build:
     version: "@project.version@"
+logging:
+  level:
+    org.springframework:
+      data: DEBUG
+      security: DEBUG
+      web: DEBUG
