@@ -44,6 +44,7 @@
         showResponse(JSON.parse(response.body).responseMessage);
       });
       stompClient.subscribe('/user/' + 'why' + '/message', function (response) {
+        alert(response);
         receiveResponse(JSON.parse(response.body).responseMessage);
       })
     });

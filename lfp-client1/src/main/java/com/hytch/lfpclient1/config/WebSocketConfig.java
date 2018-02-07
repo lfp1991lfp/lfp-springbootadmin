@@ -1,10 +1,13 @@
 package com.hytch.lfpclient1.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 /**
  * websocket配置
@@ -33,5 +36,41 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		registry.setApplicationDestinationPrefixes("/app", "/web_client");
 		//推送用户前缀
 		registry.setUserDestinationPrefix("/user");
+	}
+	
+	/**
+	 * 链接进来的消息,都走这个方法体.
+	 *
+	 * @param registration 管道注册
+	 */
+	@Override
+	public void configureClientInboundChannel(ChannelRegistration registration) {
+		registration.taskExecutor().corePoolSize(4) //设置消息输入通道的线程池线程数
+				.maxPoolSize(8)//最大线程数
+				.keepAliveSeconds(60);//线程活动时间
+		registration.interceptors(presenceChannelInterceptor());
+	}
+	
+	/**
+	 * 输出的消息都走这个方法体
+	 *
+	 * @param registration 管道注册
+	 */
+	@Override
+	public void configureClientOutboundChannel(ChannelRegistration registration) {
+		registration.taskExecutor().corePoolSize(4).maxPoolSize(8);
+		registration.interceptors(presenceChannelInterceptor());
+	}
+	
+	@Override
+	public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+		registration.setMessageSizeLimit(8192) //设置消息字节数大小
+				.setSendBufferSizeLimit(8192)//设置消息缓存大小
+				.setSendTimeLimit(10000); //设置消息发送时间限制毫秒
+	}
+	
+	@Bean
+	public PresenceChannelInterceptor presenceChannelInterceptor() {
+		return new PresenceChannelInterceptor();
 	}
 }
