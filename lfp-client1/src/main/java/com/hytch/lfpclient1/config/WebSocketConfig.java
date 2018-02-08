@@ -1,13 +1,19 @@
 package com.hytch.lfpclient1.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
+import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 
 /**
  * websocket配置
@@ -18,6 +24,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
  * stompEndpointRegistry.addEndpoint("/lfp").withSockJS();这一行代码用来注册STOMP协议节点，同时指定使用SockJS协议。
  * configureMessageBroker方法用来配置消息代理，由于我们是实现推送功能，这里的消息代理是/topic
  */
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
@@ -67,6 +74,32 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		registration.setMessageSizeLimit(8192) //设置消息字节数大小
 				.setSendBufferSizeLimit(8192)//设置消息缓存大小
 				.setSendTimeLimit(10000); //设置消息发送时间限制毫秒
+		
+		registration.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
+			@Override
+			public WebSocketHandler decorate(WebSocketHandler webSocketHandler) {
+				return new WebSocketHandlerDecorator(webSocketHandler) {
+					@Override
+					public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
+						if (session != null && session.getPrincipal() != null) {
+							String username = session.getPrincipal().getName();
+							log.info("online: " + username);
+						}
+						super.afterConnectionEstablished(session);
+					}
+					
+					@Override
+					public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
+							throws Exception {
+						if (session != null && session.getPrincipal() != null) {
+							String username = session.getPrincipal().getName();
+							log.info("offline: " + username);
+						}
+						super.afterConnectionClosed(session, closeStatus);
+					}
+				};
+			}
+		});
 	}
 	
 	@Bean
