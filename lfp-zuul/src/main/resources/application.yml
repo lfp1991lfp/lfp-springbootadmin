@@ -19,12 +19,21 @@ zuul:
    api-user:
 #    API路径
      path: /api/user/**
+     stripPrefix: true
 #    访问的服务,也可以配置url,指明具体的物理地址
      serviceId: lfp-feign
+#     url: http://localhost:8006/user/hi
 #  订单网关
    api-order:
      path: /api/order/**
      serviceId: lfp-ribbon
+#  测试网关
+   api-test:
+     path: /api/test/**
+#     url: http://localhost:8002/api/hi
+     stripPrefix: true
+#     使用serviceId，需要配合负载均衡，参见下面的233
+     serviceId: lfp-admin-cloud-client
 # 所有的服务都被忽略，除了上述的两个路由路径(path)
   ignored-services: '*'
   force-original-query-string-encoding: true
@@ -32,3 +41,19 @@ ribbon:
   eureka:
 #   ribbon禁掉Eureka
     enabled: false
+#    233
+lfp-admin-cloud-client:
+  ribbon:
+#   负载多个端口号
+    listOfServers: 127.0.0.1:8002,127.0.0.1:8004
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
+lfp-feign:
+  ribbon:
+    listOfServers: 127.0.0.1:8006
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
