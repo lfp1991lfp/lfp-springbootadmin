@@ -13,18 +13,28 @@ spring:
 hystrix:
   metrics:
     enabled: true
+  command:
+      default:
+        execution:
+          isolation:
+            strategy: SEMAPHORE
 management:
   security:
     enabled: false
 feign:
   client:
     config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
+      feignName:
+        connectTimeout: 8000
+        readTimeout: 10000
+        loggerLevel: full
+#        errorDecoder: com.example.SimpleErrorDecoder
+#        retryer: com.example.SimpleRetryer
+        requestInterceptors:
+          - com.hytch.lfpfeign.interceptor.ParamsInterceptor
+          - com.hytch.lfpfeign.interceptor.ParamsInterceptor1
+        decode404: false
 feign.hystrix.enabled: true
-
 
 info:
   app:
